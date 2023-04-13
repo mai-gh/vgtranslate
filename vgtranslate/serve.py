@@ -149,6 +149,12 @@ class APIHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             query_components = {}
         content_length = int(self.headers.getheader('content-length', 0))
         data = self.rfile.read(content_length);
+
+        with open("in.png", 'wb') as f: 
+          cc = json.loads(data)
+          dd = base64.b64decode(cc['image'])
+          f.write(dd)
+
         print data[:100]
         print content_length
         print data[-100:]
@@ -157,17 +163,25 @@ class APIHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         start_time = time.time()
         
         result = self._process_request(data, query_components)
+        #print("RESULT_IMAGE: ", result['image'])
         #result['auto'] = 'auto'
         print "AUTO AUTO"
         print ['Request took: ', time.time()-start_time]
         self.send_response(200)
         self.send_header("Content-type", "text/html")
         output = json.dumps(result)
+        print("OUTPUT: ", output)
         print ['out:', output[-100:]]
         self.send_header("Content-Length", len(output))
         self.end_headers()
 
         print "Output length: "+str(len(output))
+        
+        with open("out.png", 'wb') as f: 
+          #cc = json.loads(data)
+          gg = base64.b64decode(result['image'])
+          f.write(gg)
+
         self.wfile.write(output)
 
     def _process_request(self, body, query):
