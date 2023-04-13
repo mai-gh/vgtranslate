@@ -2,7 +2,7 @@
 
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import urlparse, parse_qs
-from PIL import Image
+from PIL import Image, ImageDraw
 import json
 from base64 import b64decode, b64encode
 from io import BytesIO
@@ -33,13 +33,23 @@ class S(BaseHTTPRequestHandler):
         #with Image.open(image) as im:
         #    im.rotate(45).show()
         im = Image.open(image)
+        size = im.size
+        tt = Image.new('RGBA', size, (255, 0, 0, 0))
+        uu = ImageDraw.Draw(tt)
+        uu.ellipse((25, 25, 75, 75), fill=(255, 0, 0))
+
+        tt.save('test_tt.png', 'PNG')
+        
+
+
         #im.rotate(45).show()
         #im.rotate(45)
         #cc = im.tobytes(encoder_name='raw')
         #dd = b64encode(im.tobytes(encoder_name='PNG'))
         mm = BytesIO()
         #mm.write(b"Some codded message")
-        im.save(mm, format='png')
+        #im.save(mm, format='png')
+        tt.save(mm, format='png')
         mm.seek(0)
         #print(mm)
         oo = b64encode(mm.read())
