@@ -6,6 +6,7 @@ from PIL import Image, ImageDraw
 import json
 from base64 import b64decode, b64encode
 from io import BytesIO
+import pytesseract
 
 class S(BaseHTTPRequestHandler):
     def _set_headers(self):
@@ -34,11 +35,17 @@ class S(BaseHTTPRequestHandler):
         #    im.rotate(45).show()
         im = Image.open(image)
         size = im.size
-        tt = Image.new('RGBA', size, (255, 0, 0, 0))
-        uu = ImageDraw.Draw(tt)
-        uu.ellipse((25, 25, 75, 75), fill=(255, 0, 0))
 
-        tt.save('test_tt.png', 'PNG')
+        print('got')
+        #print("ZZZZZZZZ  :  ", pytesseract.image_to_string(im, lang='jpn'))
+        print("ZZZZZZZZ  :  ", pytesseract.image_to_boxes(im, lang='jpn'))
+        print("2222")
+
+        tt = Image.new('RGBA', size, (255, 0, 0, 0))
+        #uu = ImageDraw.Draw(tt)
+        #uu.ellipse((25, 25, 75, 75), fill=(255, 0, 0))
+
+        #tt.save('test_tt.png', 'PNG')
         
 
 

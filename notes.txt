@@ -1,0 +1,5 @@
+pacman -S adobe-source-han-sans-jp-fonts adobe-source-han-serif-jp-fonts otf-ipafont ttf-hanazono ttf-sazanami
+
+aur tesseract-ocr-git
+
+パックマン
