@@ -27,13 +27,27 @@ ret,th1 = cv2.threshold(img,200,255,cv2.THRESH_BINARY)
 
 kernel = cv2.getStructuringElement(cv2.MORPH_RECT,(5,5))
 dilation = cv2.dilate(th1,kernel,iterations = 4)
-contours, _ = cv2.findContours(dilation, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
 
-print(contours)
+#contours, _ = cv2.findContours(dilation, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
+#print(contours)
 
-for c in contours:
-  x,y,w,h = cv2.boundingRect(c)
-  cv2.rectangle(cv2_img,(x,y),(x+w,y+h),(255,0,0))
+cnts = cv2.findContours(dilation, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+cnts = cnts[0] if len(cnts) == 2 else cnts[1]
+
+
+ROI_number = 0
+for c in cnts:
+  area = cv2.contourArea(c)
+  if area > 10000:
+    x,y,w,h = cv2.boundingRect(c)
+    cv2.rectangle(img, (x, y), (x + w, y + h), (36,255,12), 3)
+    ROI = img[y:y+h, x:x+w]
+    cv2.imshow('cv2',ROI)
+    
+
+#for c in contours:
+#  x,y,w,h = cv2.boundingRect(c)
+#  cv2.rectangle(cv2_img,(x,y),(x+w,y+h),(255,0,0))
 
 
 
@@ -56,7 +70,7 @@ for c in contours:
 
 #cv2.imshow('cv2',img)
 #cv2.imshow('cv2',cv2_img)
-cv2.imshow('cv2',cv2_img)
+#cv2.imshow('cv2',cv2_img)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 
@@ -74,5 +88,6 @@ cv2.destroyAllWindows()
 
 
 #print(json.dumps(data, indent=2))
+data = pytesseract.image_to_string(ROI, lang='jpn', config='--psm 6').lower() 
 
-#print(data)
+print(data)
