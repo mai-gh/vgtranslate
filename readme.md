@@ -3,6 +3,7 @@ this is a fork of https://gitlab.com/spherebeaker/vgtranslate
 [look at the original readme](old_README.md)
 
 
-the point of this repo is to add some expansion to this program
+the point of this repo is to explore making translations while offline
 
-first off being proxy support
+
+offline video game translation tool
